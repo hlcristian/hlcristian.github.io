@@ -1,1 +1,254 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Celeste</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --parchment-bg: #fdf5e6;
+            --text-color: #3e2723;
+            --gold: #d4af37;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Fondo oscuro elegante simulando textura/madera oscura */
+            background: radial-gradient(circle at center, #4e342e, #1a0f0d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Caveat', cursive;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        #intro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
+        .btn-open {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            padding: 15px 40px;
+            font-size: 2rem;
+            font-family: 'Great Vibes', cursive;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-open:hover {
+            background: var(--gold);
+            color: #1a0f0d;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+            transform: scale(1.05);
+        }
+
+        #letter-wrapper {
+            display: none;
+            opacity: 0;
+            width: 100%;
+            max-width: 800px;
+            perspective: 1000px;
+        }
+
+        .parchment {
+            background-color: var(--parchment-bg);
+            /* Sombra exterior para 3D y sombra interior para el borde envejecido */
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.8), 
+                inset 0 0 60px rgba(139, 69, 19, 0.4),
+                inset 0 0 20px rgba(139, 69, 19, 0.6);
+            border-radius: 5px 5px 15px 15px;
+            padding: 50px 40px;
+            position: relative;
+            color: var(--text-color);
+            background-image: 
+                /* Ligera textura de ruido para simular papel viejo */
+                linear-gradient(rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+            background-size: 100px 100px;
+        }
+
+        /* Borde superior del pergamino (efecto enrollado) */
+        .parchment::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -2%;
+            width: 104%;
+            height: 30px;
+            background: linear-gradient(to bottom, #d2b48c, #deb887 50%, #c19a6b);
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        .greeting, .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.8rem;
+            color: #27140e;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        .content-para {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: justify;
+            text-indent: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Clases para la animación en cascada */
+        .reveal-text {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        .reveal-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animación general de entrada del pergamino */
+        @keyframes slideUpFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) rotateX(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        .animate-letter {
+            animation: slideUpFadeIn 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @media (max-width: 600px) {
+            .parchment {
+                padding: 40px 25px;
+            }
+            .content-para {
+                font-size: 1.35rem;
+                text-indent: 15px;
+            }
+            .greeting, .signature {
+                font-size: 2.2rem;
+            }
+            .btn-open {
+                font-size: 1.5rem;
+                padding: 12px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <button id="open-btn" class="btn-open">Tengo algo que decirte, ábreme</button>
+    </div>
+
+    <div id="letter-wrapper">
+        <div class="parchment">
+            <h1 class="greeting reveal-text">Hola buenos días, mi Celeste.</h1>
+            
+            <p class="content-para reveal-text">
+                Pasaba a desearte un día lleno de éxitos y muchas sonrisas; siempre quiero verte bien y feliz. Me encanta escucharte reír.
+            </p>
+            
+            <p class="content-para reveal-text">
+                Mi Celeste, quería decirte que me estoy enamorando de la mujer que eres y me encanta cada parte de ti. Sé que somos humanos, que tenemos días malos, que nos cansamos, que tenemos muchas emociones y debilidades. Te ofrezco todo lo que soy. De eso se trata el amor: de aceptar los defectos y amar las virtudes. Y, ¿sabes? Todos esos defectos se hacen pequeños al lado del gran amor que te ofrezco. Haces que quiera ser mejor cada día.
+            </p>
+
+            <p class="content-para reveal-text">
+                Estoy listo y emocionado por conocer cada una de tus facetas. Quiero verte siempre tal cual eres, que me demuestres cada día la increíble mujer que eres; te siento tan niña y a la vez tan mujer. Sé que no podemos llegar a conocer a alguien en su totalidad, pero te aseguro que conocerte en cada etapa es exactamente lo que más deseo. No tienes que fingir ni ser infalible conmigo, ni impresionarme, aunque ya lo haces y todos los días me sorprendes. Imagino tantos momentos hermosos a tu lado, tantos momentos de felicidad.
+            </p>
+
+            <p class="content-para reveal-text">
+                Te mentiría si te dijera que yo no tengo miedos. A veces impone darme cuenta de la tremenda mujer que eres y sé que no será un camino sin retos. Pero luego hablo contigo, escucho tu voz, siento esa paz inmensa que me das, y todos mis miedos desaparecen. Lo que siento por ti es mucho más grande que cualquier duda. Sé, en lo más profundo de mi ser, que estás hecha para mí y cada día me confirmas más que haberte conocido fue el mejor giro que pudo dar mi vida.
+            </p>
+
+            <p class="content-para reveal-text">
+                Quiero quedarme y cambiar los 'te quiero' por los 'te amo'. Hoy te lo digo con absoluta certeza, sin miedos: te amo. Te amo porque cada latido y cada pensamiento mío van dedicados a ti. Te amo tanto, que le pido a Dios que te cuide mucho cuando yo no puedo cuidarte, y no me canso de agradecerle el que te haya puesto en mi camino. Te amo con toda mi alma y, por primera vez, no me importa no saber por qué. No hay razones para enamorarse de verdad.
+            </p>
+
+            <div class="signature reveal-text">
+                Te amo, Celeste.<br>
+                Que tengas un día hermoso.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const openBtn = document.getElementById('open-btn');
+            const introScreen = document.getElementById('intro-screen');
+            const letterWrapper = document.getElementById('letter-wrapper');
+            const paragraphs = document.querySelectorAll('.reveal-text');
+
+            openBtn.addEventListener('click', () => {
+                // 1. Desvanecer la pantalla de inicio
+                introScreen.style.opacity = '0';
+                introScreen.style.transform = 'scale(1.1)';
+                
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    
+                    // 2. Mostrar y animar el pergamino (subiendo)
+                    letterWrapper.style.display = 'block';
+                    // Pequeño delay para asegurar que el display block se aplique antes de animar
+                    setTimeout(() => {
+                        letterWrapper.style.opacity = '1';
+                        letterWrapper.classList.add('animate-letter');
+                        
+                        // 3. Cascada de párrafos
+                        // Inicia poco después de que el pergamino comienza a subir
+                        setTimeout(() => {
+                            paragraphs.forEach((p, index) => {
+                                setTimeout(() => {
+                                    p.classList.add('visible');
+                                }, index * 800); // 800ms de retraso entre cada párrafo para lectura dramática
+                            });
+                        }, 1000);
+                        
+                    }, 50);
+                }, 1500); // Espera a que termine la animación de opacidad del inicio
+            });
+        });
+    </script>
+</body>
+</html>
